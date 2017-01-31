@@ -32,7 +32,7 @@ public class OrderInfoDAO {
 		String sql = "delete from order_info where id=?";
 		Object[] params = { order.getId() };
 		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows delated:" + rows);
+		System.out.println("No of rows deleted:" + rows);
 
 	}
 

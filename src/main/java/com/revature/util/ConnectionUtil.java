@@ -12,7 +12,7 @@ public class ConnectionUtil {
 			ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
 			ds.setUsername("root");
 			ds.setPassword("chitra16");
-			ds.setUrl("jdbc:mysql://localhost:3306/restaurantapp");
+			ds.setUrl("jdbc:mysql://localhost:3306/test");
 			return ds;
 		}
 

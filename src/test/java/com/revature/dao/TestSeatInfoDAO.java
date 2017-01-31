@@ -33,7 +33,7 @@ public class TestSeatInfoDAO {
 //	    for(String s: listSeatNames) {
 //	    	System.out.println(s);
 //	    }
-	      System.out.println(seatDAO.listById(2));
+	      System.out.println(seatDAO.listById(4));
 	      
 	      
 	      
