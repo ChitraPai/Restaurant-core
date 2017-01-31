@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,14 +37,15 @@ public class SeatInfoDAO {
 
 	public List<SeatInfo> list() {
 		String sql = "select id,seat_name,seat_status from seat_info";
-		return jdbcTemplate.query(sql, (rs, rowNum) -> {
-			SeatInfo seat = new SeatInfo();
-			seat.setId(rs.getInt("id"));
-			seat.setSeatName(rs.getString("seat_name"));
-			seat.setSeatStatus(rs.getString("seat_status"));
+		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
+	}
 
-			return seat;
-		});
+	private SeatInfo convert(ResultSet rs) throws SQLException {
+		SeatInfo seat = new SeatInfo();
+		seat.setId(rs.getInt("id"));
+		seat.setSeatName(rs.getString("seat_name"));
+		seat.setSeatStatus(rs.getString("seat_status"));
+		return seat;
 	}
 
 	public List<String> listSeatNames() {
@@ -54,14 +57,7 @@ public class SeatInfoDAO {
 	public SeatInfo listById(int id) {
 		String sql = "select id,seat_name,seat_status from seat_info where id=? ";
 		Object[] params = { id };
-		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-			SeatInfo seat = new SeatInfo();
-			seat.setId(rs.getInt("id"));
-			seat.setSeatName(rs.getString("seat_name"));
-			seat.setSeatStatus(rs.getString("seat_status"));
-
-			return seat;
-		});
-
+		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
+			
 	}
 }

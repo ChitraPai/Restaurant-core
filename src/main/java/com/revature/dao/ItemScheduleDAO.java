@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,38 +38,28 @@ public class ItemScheduleDAO {
 
 	public List<ItemSchedule> list() {
 		String sql = "select id,meal_id,item_id,quantity from item_schedule";
-		return jdbcTemplate.query(sql, (rs, rowNum) -> {
-			ItemSchedule itemsch = new ItemSchedule();
-			itemsch.setId(rs.getInt("id"));
-			MealsType meal = new MealsType();
-			meal.setId(rs.getInt("meal_id"));
-			itemsch.setMealId(meal);
-			MenuItems menu = new MenuItems();
-			menu.setId(rs.getInt("item_id"));
-			itemsch.setItemId(menu);
+		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
 
-			itemsch.setQuantity(rs.getInt("quantity"));
-			return itemsch;
-		});
+	}
 
+	private ItemSchedule convert(ResultSet rs) throws SQLException {
+		ItemSchedule itemsch = new ItemSchedule();
+		itemsch.setId(rs.getInt("id"));
+		MealsType meal = new MealsType();
+		meal.setId(rs.getInt("meal_id"));
+		itemsch.setMealId(meal);
+		MenuItems menu = new MenuItems();
+		menu.setId(rs.getInt("item_id"));
+		itemsch.setItemId(menu);
+
+		itemsch.setQuantity(rs.getInt("quantity"));
+		return itemsch;
 	}
 
 	public ItemSchedule listById(int id) {
 		String sql = "select id,meal_id,item_id,quantity from item_schedule where id=? ";
 		Object[] params = { id };
-		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-			ItemSchedule itemsch = new ItemSchedule();
-			itemsch.setId(rs.getInt("id"));
-			MealsType meal = new MealsType();
-			meal.setId(rs.getInt("meal_id"));
-			itemsch.setMealId(meal);
-			MenuItems menu = new MenuItems();
-			menu.setId(rs.getInt("item_id"));
-			itemsch.setItemId(menu);
-
-			itemsch.setQuantity(rs.getInt("quantity"));
-			return itemsch;
-		});
+		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
 
 	}
 }

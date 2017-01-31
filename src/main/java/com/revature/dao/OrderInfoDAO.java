@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,14 +37,16 @@ public class OrderInfoDAO {
 
 	public List<OrderInfo> list() {
 		String sql = "select id,seat_name,order_status from order_info";
-		return jdbcTemplate.query(sql, (rs, rowNum) -> {
-			OrderInfo order = new OrderInfo();
-			order.setId(rs.getInt("id"));
-			order.setSeatName(rs.getString("seat_name"));
-			order.setOrderStatus(rs.getString("order_status"));
+		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
 
-			return order;
-		});
+	}
+
+	private OrderInfo convert(ResultSet rs) throws SQLException {
+		OrderInfo order = new OrderInfo();
+		order.setId(rs.getInt("id"));
+		order.setSeatName(rs.getString("seat_name"));
+		order.setOrderStatus(rs.getString("order_status"));
+		return order;
 	}
 
 	public List<String> listSeatNames() {
@@ -53,13 +57,7 @@ public class OrderInfoDAO {
 	public OrderInfo listById(int id) {
 		String sql = "select id,seat_name,order_status from order_info where id=? ";
 		Object[] params = { id };
-		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-			OrderInfo order = new OrderInfo();
-			order.setId(rs.getInt("id"));
-			order.setSeatName(rs.getString("seat_name"));
-			order.setOrderStatus(rs.getString("order_status"));
+		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
 
-			return order;
-		});
 	}
 }

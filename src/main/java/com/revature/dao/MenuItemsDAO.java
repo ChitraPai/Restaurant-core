@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,14 +37,15 @@ public class MenuItemsDAO {
 
 	public List<MenuItems> list() {
 		String sql = "select id,item_name,price from menu_items";
-		return jdbcTemplate.query(sql, (rs, rowNum) -> {
-			MenuItems menu = new MenuItems();
-			menu.setId(rs.getInt("id"));
-			menu.setItemName(rs.getString("item_name"));
-			menu.setPrice(rs.getInt("price"));
+		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
+	}
 
-			return menu;
-		});
+	private MenuItems convert(ResultSet rs) throws SQLException {
+		MenuItems menu = new MenuItems();
+		menu.setId(rs.getInt("id"));
+		menu.setItemName(rs.getString("item_name"));
+		menu.setPrice(rs.getInt("price"));
+		return menu;
 	}
 
 	public List<String> listItemNames() {
@@ -54,14 +57,7 @@ public class MenuItemsDAO {
 	public MenuItems listById(int id) {
 		String sql = "select id,item_name,price from menu_items where id=? ";
 		Object[] params = { id };
-		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-			MenuItems menu = new MenuItems();
-			menu.setId(rs.getInt("id"));
-			menu.setItemName(rs.getString("item_name"));
-			menu.setPrice(rs.getInt("price"));
-
-			return menu;
-		});
+		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
 
 	}
 }

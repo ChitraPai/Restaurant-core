@@ -1,5 +1,7 @@
 package com.revature.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,48 +23,32 @@ public class OrderTransactionDAO {
 
 	public List<OrderTransaction> list() {
 		String sql = "select id,order_id,items_id,items_qty,order_timestamp,order_status from order_transaction";
-		return jdbcTemplate.query(sql, (rs, rowNum) -> {
-			OrderTransaction orderTransaction = new OrderTransaction();
-			orderTransaction.setId(rs.getInt("id"));
+		return jdbcTemplate.query(sql, (rs, rowNum) -> convert(rs));
 
-			OrderInfo order = new OrderInfo();
-			order.setId(rs.getInt("order_id"));
-			orderTransaction.setOrderId(order);
+	}
 
-			MenuItems menu = new MenuItems();
-			menu.setId(rs.getInt("items_id"));
-			orderTransaction.setItemId(menu);
+	private OrderTransaction convert(ResultSet rs) throws SQLException {
+		OrderTransaction orderTransaction = new OrderTransaction();
+		orderTransaction.setId(rs.getInt("id"));
 
-			orderTransaction.setItemsQty(rs.getInt("items_qty"));
-			orderTransaction.setOrderTimestamp(rs.getTimestamp("order_timestamp").toLocalDateTime());
-			orderTransaction.setOrderStatus(rs.getString("order_status"));
+		OrderInfo order = new OrderInfo();
+		order.setId(rs.getInt("order_id"));
+		orderTransaction.setOrderId(order);
 
-			return orderTransaction;
-		});
+		MenuItems menu = new MenuItems();
+		menu.setId(rs.getInt("items_id"));
+		orderTransaction.setItemId(menu);
 
+		orderTransaction.setItemsQty(rs.getInt("items_qty"));
+		orderTransaction.setOrderTimestamp(rs.getTimestamp("order_timestamp").toLocalDateTime());
+		orderTransaction.setOrderStatus(rs.getString("order_status"));
+		return orderTransaction;
 	}
 
 	public OrderTransaction listById(int id) {
 
 		String sql = "select id,order_id,items_id,items_qty,order_timestamp,order_status from order_transaction where id=?";
 		Object[] params = { id };
-		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> {
-			OrderTransaction orderTransaction = new OrderTransaction();
-			orderTransaction.setId(rs.getInt("id"));
-
-			OrderInfo order = new OrderInfo();
-			order.setId(rs.getInt("order_id"));
-			orderTransaction.setOrderId(order);
-
-			MenuItems menu = new MenuItems();
-			menu.setId(rs.getInt("items_id"));
-			orderTransaction.setItemId(menu);
-
-			orderTransaction.setItemsQty(rs.getInt("items_qty"));
-			orderTransaction.setOrderTimestamp(rs.getTimestamp("order_timestamp").toLocalDateTime());
-			orderTransaction.setOrderStatus(rs.getString("order_status"));
-
-			return orderTransaction;
-		});
+		return jdbcTemplate.queryForObject(sql, params, (rs, rowNum) -> convert(rs));
 	}
 }

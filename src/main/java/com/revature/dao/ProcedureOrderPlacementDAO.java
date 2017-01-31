@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 
 import com.revature.util.ConnectionUtil;
+
 public class ProcedureOrderPlacementDAO {
 	JdbcTemplate jdbcTemplate = ConnectionUtil.getJdbcTemplate();
 
@@ -24,8 +25,7 @@ public class ProcedureOrderPlacementDAO {
 				.addValue("in_seat_name", seat);
 
 		Map<String, Object> execute = call.execute(in);
-		String status = (String) execute.get("result");
-		return status;
+		return (String) execute.get("result");
 
 	}
 }
