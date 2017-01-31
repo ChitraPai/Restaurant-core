@@ -15,8 +15,7 @@ public class ItemScheduleDAO {
 		String sql = "insert into item_schedule(id,meal_id,item_id,quantity) values(?,?,?,?)";
 		Object[] params = { itemsch.getId(), itemsch.getMealId().getId(), itemsch.getItemId().getId(),
 				itemsch.getQuantity() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows inserted: " + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 
@@ -24,16 +23,14 @@ public class ItemScheduleDAO {
 
 		String sql = "update item_schedule set item_id=?,meal_id=? where id=?";
 		Object[] params = { itemsch.getItemId().getId(), itemsch.getMealId().getId(), itemsch.getId() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows updated: " + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 
 	public void delete(ItemSchedule itemsch) {
 		String sql = "delete from item_schedule where id=?";
 		Object[] params = { itemsch.getId() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows deleted:" + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 

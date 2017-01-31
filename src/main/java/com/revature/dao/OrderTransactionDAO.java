@@ -15,8 +15,7 @@ public class OrderTransactionDAO {
 		String sql = "insert into order_transaction(order_id,items_id,items_qty) values(?,?,?)";
 		Object[] params = { orderTransaction.getOrderId().getId(), orderTransaction.getItemId().getId(),
 				orderTransaction.getItemsQty() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows inserted: " + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 

@@ -14,8 +14,7 @@ public class OrderInfoDAO {
 
 		String sql = "insert into order_info(seat_name) values(?)";
 		Object[] params = { order.getSeatName() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows inserted: " + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 
@@ -23,16 +22,14 @@ public class OrderInfoDAO {
 
 		String sql = "update order_info set order_status=? where id=?";
 		Object[] params = { order.getOrderStatus(), order.getId() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows updated: " + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 
 	public void delete(OrderInfo order) {
 		String sql = "delete from order_info where id=?";
 		Object[] params = { order.getId() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows deleted:" + rows);
+		jdbcTemplate.update(sql, params);
 
 	}
 

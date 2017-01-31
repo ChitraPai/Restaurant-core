@@ -15,26 +15,24 @@ public class MealsTypeDAO {
 
 		String sql = "insert into meals_type(id,meal_name,from_time,to_time) values(?,?,?,?)";
 		Object[] params = { meal.getId(), meal.getMealName(), meal.getFromTime(), meal.getToTime() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows inserted: " + rows);
-
+	    jdbcTemplate.update(sql, params);
+		
 	}
 
 	public void update(MealsType meal) {
 
 		String sql = "update meals_type set meal_name=? where id=?";
 		Object[] params = { meal.getMealName(), meal.getId() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows updated: " + rows);
+	   jdbcTemplate.update(sql, params);
+		
 
 	}
 
 	public void delete(MealsType meal) {
 		String sql = "delete from meals_type where id=?";
 		Object[] params = { meal.getId() };
-		int rows = jdbcTemplate.update(sql, params);
-		System.out.println("No of rows delated:" + rows);
-
+	    jdbcTemplate.update(sql, params);
+		
 	}
 
 	public List<MealsType> list() {
